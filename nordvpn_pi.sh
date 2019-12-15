@@ -1,29 +1,31 @@
 #!/bin/bash
-
-# Author: Wim Van den Wyngaert
+###################################################################################################
 # Description: NordVPN Raspberry Pi random location picker.
-# Version: 1.1.1
+# Version: 1.1.2
+# Author: Wim Van den Wyngaert
 #
 # Exit codes:
 #   0  - Success.
-#   10 - No country codes could be displayed
-#   20 - No files for country
-#   30 - Problem killing OpenVPN process
+#   10 - No country codes could be displayed.
+#   20 - No files for country.
+#   30 - Problem killing OpenVPN process.
 #
 # Change history:
 #   1.0.0 - Initial version.
 #   1.1.0 - Add following functionalities: kill, check status and get public IP address.
-#   1.1.1 - Update help screen + comments in header of script.
+#   1.1.1 - Create help screen + comments in header of script.
+#   1.1.2 - Update help screen (start and reload options).
+###################################################################################################
 
-VERSION="1.1.1"
+VERSION="1.1.2"
 BASEPATH="/etc/openvpn"
 
 display_help() {
-  echo "NordVPN Raspberry Pi random location picker"
+  echo "NordVPN Raspberry Pi random location picker."
   echo
-  echo "Details of some arguments:"
-  echo "  CC    - Country Code in lowercase."
-  echo "  PROTO - Transfer protocol (tcp or udp)."
+  echo "Details for some of the arguments:"
+  echo "  CC    - NordVPN Country Code in lowercase."
+  echo "  PROTO - NordVPN Transfer protocol lowercase (tcp or udp)."
   echo
   echo "Usage: nordvpn_pi.sh [OPTIONS] COMMAND [ARGS]"
   echo
@@ -32,13 +34,15 @@ display_help() {
   echo "  -v, --version        Show version and exit."
   echo
   echo "Commands:"
-  echo "  countries            Show available country codes."
-  echo "  protocols            Show available protocols."
+  echo "  countries            Show available country codes for NordVPN."
+  echo "  protocols            Show available protocols for NordVPN."
   echo "  ip                   Display current public IP address."
   echo "  check                Check if OpenVPN process for NordVPN is running."
   echo "  kill                 Kill current OpenVPN process for NordVPN."
-  echo "  start [CC] [PROTO]   Start OpenVPN process."
-  echo "  reload [CC] [PROTO]  Reload OpenVPN process."
+  echo "  start [CC] [PROTO]   Start OpenVPN process for a NordVPN location and protocol."
+  echo "                       If a process already runs nothing will happen."
+  echo "  reload [CC] [PROTO]  Reload OpenVPN process for a NordVPN location and protocol."
+  echo "                       Current process (if running) will be stopped, a new one will be started."
 }
 
 display_version() {
