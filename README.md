@@ -1,15 +1,18 @@
 # NordVPN Raspberry Pi random location picker
-A random location picker for your NordVPN account on your Raspberry Pi using OpenVPN.  
+A random location picker for your NordVPN account on Raspberry Pi using OpenVPN.  
 You only need to provide a NordVPN supported country code and protocol.  
-Based on the multiple country specific ovpn files the script will take a random file to open the VPN connection.  
-I have made this script because I encountered stability problems (and conflicts with other applications like Pi-Hole) with the NordVPN Linux app.  
+Based on the country specific ovpn files and your security file the script will take a random file to open the VPN connection.  
+I have made this script because I encountered stability problems (and conflicts with other applications like Pi-hole) with the native NordVPN Linux app.  
+Several features such as display public IP address, check connection, kill connection, start/reload connection have been included.  
 Script has been tested on Raspbian GNU/Linux 10 (buster).
 ## References
 [How to setup OpenVPN on Raspberry Pi | NordVPN](https://nordvpn.com/tutorials/raspberry-pi/openvpn/)
 ## Prerequisites
-ToDo
+Install OpenVPN and the NordVPN ovpn files according to the instructions mentioned in the link above.  
+Prepare a file /etc/openvpn/nordvpnauth.txt including your NordVPN credentials (first line email address, second line password).  
+Also make sure the user who will execute the script has sudo rights.
 ## Installation instructions
-Just put the bash script on your Raspberry Pi or clone this repository.  
+Put the bash script on your Raspberry Pi or clone this repository.  
 Make sure the user who executes the script has sudo rights (example pi user).
 ## Usage
 Help screen:
@@ -36,6 +39,11 @@ Commands:
                        If a process already runs nothing will happen.
   reload [CC] [PROTO]  Reload OpenVPN process for a NordVPN location and protocol.
                        Current process (if running) will be stopped, a new one will be started.
+```
+## Example
+Start a new OpenVPN process for a random location in Belgium (be) using NordVPN's TCP/IP protocol:
+```
+$ nordvpn_pi.sh be tcp
 ```
 ## Task list
 - [x] Add feature to display NordVPN's supported country codes and protocols.
