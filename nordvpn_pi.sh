@@ -1,33 +1,48 @@
 #!/bin/bash
 
-# NordVPN Raspberry Pi random location picker.
+# Author: Wim Van den Wyngaert
+# Description: NordVPN Raspberry Pi random location picker.
+# Version: 1.1.1
+#
 # Exit codes:
-#   10 No country codes could be displayed
-#   20 No files for country
-#   30 Problem killing OpenVPN process
+#   0  - Success.
+#   10 - No country codes could be displayed
+#   20 - No files for country
+#   30 - Problem killing OpenVPN process
+#
+# Change history:
+#   1.0.0 - Initial version.
+#   1.1.0 - Add following functionalities: kill, check status and get public IP address.
+#   1.1.1 - Update help screen + comments in header of script.
 
+VERSION="1.1.1"
 BASEPATH="/etc/openvpn"
 
 display_help() {
   echo "NordVPN Raspberry Pi random location picker"
   echo
+  echo "Details of some arguments:"
+  echo "  CC    - Country Code in lowercase."
+  echo "  PROTO - Transfer protocol (tcp or udp)."
+  echo
   echo "Usage: nordvpn_pi.sh [OPTIONS] COMMAND [ARGS]"
   echo
   echo "Options:"
-  echo "  -h, --help      Show this message and exit."
-  echo "  -v, --version   Show version and exit."
+  echo "  -h, --help           Show this message and exit."
+  echo "  -v, --version        Show version and exit."
   echo
   echo "Commands:"
-  echo "  countries       Show available country codes."
-  echo "  protocols       Show available protocols."
-  echo "  ip              Display current public IP address."
-  echo "  check           Check if OpenVPN process for NordVPN is running."
-  echo "  kill            Kill current OpenVPN process for NordVPN."
-  echo "  restart         Restart OpenVPN process based on new NordVPN file."
+  echo "  countries            Show available country codes."
+  echo "  protocols            Show available protocols."
+  echo "  ip                   Display current public IP address."
+  echo "  check                Check if OpenVPN process for NordVPN is running."
+  echo "  kill                 Kill current OpenVPN process for NordVPN."
+  echo "  start [CC] [PROTO]   Start OpenVPN process."
+  echo "  reload [CC] [PROTO]  Reload OpenVPN process."
 }
 
 display_version() {
-  echo "NordVPN Raspberry Pi random location picker 1.0.0"
+  echo "NordVPN Raspberry Pi random location picker $VERSION"
 }
 
 display_countries() {
@@ -86,6 +101,14 @@ kill_current_connection() {
     echo "Check your sudo rights."
     exit 30
   fi
+}
+
+start_connection() {
+  echo "Starting new connection..."
+}
+
+reload_connection() {
+  echo "Reloading connection..."
 }
 
 get_random_file() {
@@ -153,6 +176,18 @@ fi
 if [[ $1 == "kill" ]]
 then
   kill_current_connection
+  exit 0
+fi
+
+if [[ $1 == "start" ]]
+then
+  start_connection
+  exit 0
+fi
+
+if [[ $1 == "reload" ]]
+then
+  reload_connection
   exit 0
 fi
 
