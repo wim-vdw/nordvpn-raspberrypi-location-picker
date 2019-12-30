@@ -1,7 +1,7 @@
 #!/bin/bash
 ###################################################################################################
 # Description: NordVPN Raspberry Pi random location picker.
-# Version: 1.1.2
+# Version: 1.2.0
 # Author: Wim Van den Wyngaert
 #
 # Exit codes:
@@ -10,21 +10,21 @@
 #   20 - No files for country.
 #   30 - Problem killing OpenVPN process.
 #   40 - OpenVPN process already running.
+#   50 - Country code and protocol missing.
 #
 # Change history:
 #   1.0.0 - Initial version.
 #   1.1.0 - Add following functionalities: kill, check status and get public IP address.
 #   1.1.1 - Create help screen + comments in header of script.
 #   1.1.2 - Update help screen (start and reload options).
+#   1.2.0 - Add following functionalities: start and reload.
 ###################################################################################################
 
-# Test:
-# sudo openvpn --config /etc/openvpn/de705.nordvpn.com.tcp443.ovpn --auth-user-pass /etc/openvpn/nordvpn-auth.txt --connect-timeout 5 --connect-retry-max 3
-
-VERSION="1.1.2"
+VERSION="1.2.0"
 BASEPATH="/etc/openvpn"
 AUTH_FILE="/etc/openvpn/nordvpn-auth.txt"
 CONNECT_TIMEOUT=3
+CONNECT_RETRY=3
 CONNECT_RETRY_MAX=3
 
 # Exit codes.
@@ -33,6 +33,7 @@ NO_COUNTRY_CODES=10
 NO_FILES_FOR_COUNTRY=20
 PROBLEM_KILLING_PROCESS=30
 ALREADY_RUNNING=40
+COUNTRY_CODE_AND_PROTOCOL_MISSING=50
 
 display_help() {
   echo "NordVPN Raspberry Pi random location picker."
@@ -94,18 +95,18 @@ display_public_ip() {
 }
 
 check_openvpn_process() {
-  if ! ps -ef | pgrep openvpn >/dev/null 2>&1
+  if ! pgrep openvpn >/dev/null 2>&1
   then
     echo "OpenVPN process status for NordVPN: not active"
   else
-    PROCESS_ID=$(ps -ef | pgrep openvpn)
+    PROCESS_ID=$(pgrep openvpn)
     echo "OpenVPN process status for NordVPN: active"
     echo "OpenVPN process id: $PROCESS_ID"
   fi
 }
 
 kill_current_connection() {
-  if ! ps -ef | pgrep openvpn >/dev/null 2>&1
+  if ! pgrep openvpn >/dev/null 2>&1
   then
     echo "There is currently no OpenVPN process for NordVPN running."
     exit $SUCCESS
@@ -119,22 +120,6 @@ kill_current_connection() {
     echo "Check your sudo rights."
     exit $PROBLEM_KILLING_PROCESS
   fi
-}
-
-start_connection() {
-  if ps -ef | pgrep openvpn >/dev/null 2>&1
-  then
-    PROCESS_ID=$(ps -ef | pgrep openvpn)
-    echo "Error: OpenVPN process for NordVPN already running."
-    echo "OpenVPN process id: $PROCESS_ID"
-    echo "Use the kill command of this script first or the reload command."
-    exit $ALREADY_RUNNING
-  fi
-  echo "Starting new connection..."
-}
-
-reload_connection() {
-  echo "Reloading connection..."
 }
 
 get_random_file() {
@@ -154,7 +139,32 @@ get_random_file() {
   done
   NUMBER=${#FILES[@]}
   NUM=$((RANDOM % NUMBER))
-  echo "${FILES[$NUM]}"
+  FILE=${FILES[$NUM]}
+}
+
+start_connection() {
+  COUNTRY=$1
+  PROTOCOL=$2
+  if pgrep openvpn >/dev/null 2>&1
+  then
+    PROCESS_ID=$(pgrep openvpn)
+    echo "Error: OpenVPN process for NordVPN already running."
+    echo "OpenVPN process id: $PROCESS_ID"
+    echo "Use the kill command of this script first or the reload command."
+    exit $ALREADY_RUNNING
+  fi
+  get_random_file "$COUNTRY" "$PROTOCOL"
+  echo "Starting new connection..."
+  echo "NordVPN file: $FILE"
+  echo "Authorization file: $AUTH_FILE"
+  sudo -b openvpn --config "$FILE" --auth-user-pass $AUTH_FILE --connect-timeout $CONNECT_TIMEOUT \
+                  --connect-retry $CONNECT_RETRY --connect-retry-max $CONNECT_RETRY_MAX
+}
+
+reload_connection() {
+  COUNTRY=$1
+  PROTOCOL=$2
+  echo "Reloading connection..."
 }
 
 if [[ $# -eq 0 ]]
@@ -207,13 +217,29 @@ fi
 
 if [[ $1 == "start" ]]
 then
-  start_connection
+  if [[ $# -lt 3 ]]
+  then
+    echo "Error: Specify a country code and a protocol, both in lowercase."
+    echo "Usage: nordvpn_pi.sh start [COUNTRY_CODE] [PROTOCOL]"
+    exit $COUNTRY_CODE_AND_PROTOCOL_MISSING
+  fi
+  COUNTRY=$2
+  PROTOCOL=$3
+  start_connection "$COUNTRY" "$PROTOCOL"
   exit $SUCCESS
 fi
 
 if [[ $1 == "reload" ]]
 then
-  reload_connection
+  if [[ $# -lt 3 ]]
+  then
+    echo "Error: Specify a country code and a protocol, both in lowercase."
+    echo "Usage: nordvpn_pi.sh reload [COUNTRY_CODE] [PROTOCOL]"
+    exit $COUNTRY_CODE_AND_PROTOCOL_MISSING
+  fi
+  COUNTRY=$2
+  PROTOCOL=$3
+  reload_connection "$COUNTRY" "$PROTOCOL"
   exit $SUCCESS
 fi
 
