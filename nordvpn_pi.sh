@@ -37,26 +37,28 @@ ALREADY_RUNNING=40
 COUNTRY_CODE_AND_PROTOCOL_MISSING=50
 
 display_help() {
-  echo "NordVPN Raspberry Pi random location picker."
-  echo
-  echo "Details for some of the arguments:"
-  echo "  [CC]    - NordVPN Country Code in lowercase."
-  echo "  [PROTO] - NordVPN Transfer protocol in lowercase (tcp or udp)."
-  echo
-  echo "Usage: nordvpn_pi.sh [OPTIONS] COMMAND [ARGS]"
-  echo
-  echo "Options:"
-  echo "  -h, --help           Show this message and exit."
-  echo "  -v, --version        Show version and exit."
-  echo
-  echo "Commands:"
-  echo "  countries            Show available country codes for NordVPN."
-  echo "  protocols            Show available protocols for NordVPN."
-  echo "  ip                   Display current public IP address."
-  echo "  check                Check if OpenVPN process for NordVPN is running."
-  echo "  kill                 Kill current OpenVPN process for NordVPN."
-  echo "  start [CC] [PROTO]   Start OpenVPN process for a NordVPN location and protocol."
-  echo "                       If a process already runs nothing will happen."
+  cat <<- _EOF_
+NordVPN Raspberry Pi random location picker.
+
+Details for some of the arguments:
+  [CC]    - NordVPN Country Code in lowercase.
+  [PROTO] - NordVPN Transfer protocol in lowercase (tcp or udp).
+
+Usage: nordvpn_pi.sh [OPTIONS] COMMAND [ARGS]
+
+Options:"
+  -h, --help           Show this message and exit.
+  -v, --version        Show version and exit.
+
+Commands:"
+  countries            Show available country codes for NordVPN.
+  protocols            Show available protocols for NordVPN.
+  ip                   Display current public IP address.
+  check                Check if OpenVPN process for NordVPN is running.
+  kill                 Kill current OpenVPN process for NordVPN.
+  start [CC] [PROTO]   Start OpenVPN process for a NordVPN location and protocol.
+                       If a process already runs nothing will happen.
+_EOF_
 }
 
 display_version() {
