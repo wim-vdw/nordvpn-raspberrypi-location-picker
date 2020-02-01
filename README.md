@@ -9,7 +9,7 @@ Script has been tested on Raspbian GNU/Linux 10 (buster).
 [How to setup OpenVPN on Raspberry Pi | NordVPN](https://nordvpn.com/tutorials/raspberry-pi/openvpn/)
 ## Prerequisites
 Install OpenVPN and the NordVPN ovpn files according to the instructions mentioned in the link above.  
-Prepare a file `/etc/openvpn/nordvp-nauth.txt` including your NordVPN credentials (first line email address, second line password).  
+Prepare a file `/etc/openvpn/nordvpn-auth.txt` including your NordVPN credentials (first line email address, second line password).  
 Also make sure the user who will execute the script has sudo rights.
 ## Installation instructions
 Put the bash script on your Raspberry Pi or clone this repository.  
