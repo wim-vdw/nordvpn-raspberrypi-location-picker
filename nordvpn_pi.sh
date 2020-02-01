@@ -18,10 +18,11 @@
 #   1.1.1 - Create help screen + comments in header of script.
 #   1.1.2 - Update help screen (start and reload options).
 #   1.2.0 - Add following functionalities: start and reload.
-#   1.2.1 - Remove obsolete reload function.
+#   1.3.0 - Remove obsolete reload function.
+#   1.3.1 - Update help via here script.
 ###################################################################################################
 
-VERSION="1.2.1"
+VERSION="1.3.1"
 BASEPATH="/etc/openvpn"
 AUTH_FILE="/etc/openvpn/nordvpn-auth.txt"
 CONNECT_TIMEOUT=3
