@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ###################################################################################################
 # Description: NordVPN Raspberry Pi random location picker.
-# Version: 1.2.1
+# Version: 1.3.2
 # Author: Wim Van den Wyngaert
 #
 # Exit codes:
@@ -20,9 +20,10 @@
 #   1.2.0 - Add following functionalities: start and reload.
 #   1.3.0 - Remove obsolete reload function.
 #   1.3.1 - Update help via here script.
+#   1.3.2 - Update shebang.
 ###################################################################################################
 
-VERSION="1.3.1"
+VERSION="1.3.2"
 BASEPATH="/etc/openvpn"
 AUTH_FILE="/etc/openvpn/nordvpn-auth.txt"
 CONNECT_TIMEOUT=3
