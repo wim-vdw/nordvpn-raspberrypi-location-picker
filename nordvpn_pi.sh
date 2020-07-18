@@ -48,11 +48,11 @@ Details for some of the arguments:
 
 Usage: nordvpn_pi.sh [OPTIONS] COMMAND [ARGS]
 
-Options:"
+Options:
   -h, --help           Show this message and exit.
   -v, --version        Show version and exit.
 
-Commands:"
+Commands:
   countries            Show available country codes for NordVPN.
   protocols            Show available protocols for NordVPN.
   ip                   Display current public IP address.
