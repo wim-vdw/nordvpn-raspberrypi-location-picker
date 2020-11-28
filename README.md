@@ -60,4 +60,4 @@ $ nordvpn_pi.sh start be tcp
 - [x] Add feature to check and kill OpenVPN processes for NordVPN.
 - [x] Add feature to start and reload OpenVPN process for NordVPN.
 - [x] Remove obsolete feature reload OpenVPN process for NordVPN.
-- [ ] Make repository public after testing.
+- [x] Make repository public after testing.
