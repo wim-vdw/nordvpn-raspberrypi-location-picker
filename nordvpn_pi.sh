@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 ###################################################################################################
 # Description: NordVPN Raspberry Pi random location picker.
-# Version: 1.3.3
+# Version: 1.3.4
 # Author: Wim Van den Wyngaert
 #
 # Exit codes:
@@ -22,9 +22,10 @@
 #   1.3.1 - Update help via here script.
 #   1.3.2 - Update shebang.
 #   1.3.3 - Reformat script.
+#   1.3.4 - Update help screen.
 ###################################################################################################
 
-VERSION="1.3.3"
+VERSION="1.3.4"
 BASEPATH="/etc/openvpn"
 AUTH_FILE="/etc/openvpn/nordvpn-auth.txt"
 CONNECT_TIMEOUT=3
@@ -42,13 +43,17 @@ COUNTRY_CODE_AND_PROTOCOL_MISSING=50
 display_help() {
   cat <<-_EOF_
 NordVPN Raspberry Pi random location picker.
+
 Details for some of the arguments:
   [CC]    - NordVPN Country Code in lowercase.
   [PROTO] - NordVPN Transfer protocol in lowercase (tcp or udp).
+
 Usage: nordvpn_pi.sh [OPTIONS] COMMAND [ARGS]
+
 Options:
   -h, --help           Show this message and exit.
   -v, --version        Show version and exit.
+
 Commands:
   countries            Show available country codes for NordVPN.
   protocols            Show available protocols for NordVPN.
